@@ -1,0 +1,18 @@
+
+<p>----restaurant-component----</p>
+
+<h1>Éttermek listája</h1>
+
+<p>Válassz éttermet:
+<select [(ngModel)]="chosenRestaurant" (change)="saveChosenRestaurantValue()" required [value]="">
+    <option *ngFor="let restaurant of resList" [ngValue]="restaurant">
+        {{ restaurant.getName() }}
+    </option>
+</select>
+</p>
+
+<p>Kiválasztott ID: {{ chosenRestaurant?.id }}</p>
+
+<button (click)="onButtonClick()">Tovább</button>
+
+<p>----restaurant-component----</p>

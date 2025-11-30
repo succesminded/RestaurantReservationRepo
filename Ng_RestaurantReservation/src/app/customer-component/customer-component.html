@@ -1,0 +1,36 @@
+<p>----customer-component----</p>
+
+<h1>Adatok megadása a foglaláshoz</h1>
+
+<label><b>Kiválasztott étterem neve: </b> {{ restaurantService.getRestaurant()?.getName() }} 
+    (nyitvatartás:  {{ restaurantService.getRestaurant()?.getOpenFrom() }}:00 - 
+    {{ restaurantService.getRestaurant()?.getOpenTo() }}:00)</label>
+
+<form #myForm="ngForm" (ngSubmit)="submitForm()">
+
+    <h3>Add meg az adataid:</h3>
+
+    <label><b>Név: </b></label>
+    <input type="text" name="name" [(ngModel)]="formData.name">
+    <br>
+    <br>
+
+    <label><b>Email: </b></label>
+    <input type="email" name="email" [(ngModel)]="formData.email">
+    <br>
+    <br>
+
+    <label><b>Telefonszám: </b></label>
+    <input type="number" name="age" [(ngModel)]="formData.phone">
+    <br>
+    <br>
+
+    <button type="submit">Küldés</button>
+
+</form>
+
+<p>Űrlap tartalma: {{ formData | json }}</p>
+
+<button (click)="onCustomerBackButtonClick()">Vissza</button>
+
+<p>----customer-component----</p>

@@ -1,0 +1,39 @@
+<p>----reservation-component----</p>
+
+<h1>Foglalás dátumának és vendégek számának megadása</h1>
+
+<label><b>Kiválasztott étterem neve: </b>{{ restaurantService.getRestaurant()?.getName() }} 
+    (nyitvatartás:  {{ restaurantService.getRestaurant()?.getOpenFrom() }}:00 - 
+    {{ restaurantService.getRestaurant()?.getOpenTo() }}:00)</label>
+<br>
+<label><b>Foglaló neve: </b>{{ restaurantService.getReservation()?.getName() }}</label>
+<br>
+<label><b>Foglaló email címe: </b>{{ restaurantService.getReservation()?.getEmail() }}</label>
+<br>
+<label><b>Foglaló telefonszáma: </b>{{ restaurantService.getReservation()?.getPhone() }}</label>
+<br>
+<br>
+
+<form #myForm="ngForm" (ngSubmit)="submitForm()">
+
+    <h3>Válassz dátumot és add meg a vendégek számát:</h3>
+
+    <label><b>Dátum: </b></label>
+    <input type="date" name="date" [(ngModel)]="formData.date" [min]="today">
+    <br>
+    <br>
+
+    <label><b>Vendégek száma: </b></label>
+    <input type="number" name="seats" [(ngModel)]="formData.seats">
+    <br>
+    <br>
+
+    <button type="submit">Küldés</button>
+
+</form>
+
+<p>Űrlap tartalma: {{ formData | json }}</p>
+
+<button (click)="onReservationBackButtonClick()">Vissza</button>
+
+<p>----reservation-component----</p>
