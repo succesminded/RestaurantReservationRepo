@@ -16,16 +16,13 @@ import { RestaurantService } from '../service/restaurant-service';
 })
 export class RestaurantComponent {
 
-  private restaurant: Restaurant | null;
   private http: HttpClient;
   private router: Router;
   public resList: Restaurant[] = [];
   private restaurantService: RestaurantService;
-  private name: string = "";
   
 
   public constructor(http: HttpClient, router: Router, restaurantService: RestaurantService) {
-      this.restaurant = null;
       this.http = http;
       this.router = router;
       this.resList = [];
@@ -35,12 +32,7 @@ export class RestaurantComponent {
   //Éttermek listájának lekérése inicializáláskor
   ngOnInit() {
     this.getAllRestaurant();
-    console.log("restaurantComponent - stored restaurant id: " + this.restaurantService.getRestaurant()?.getId() + "\n\r" +
-                "restaurantComponent - stored restaurant name: " + this.restaurantService.getRestaurant()?.getName() + "\n\r" +
-                "restaurantComponent - stored restaurant open from: " + this.restaurantService.getRestaurant()?.getOpenFrom() + "\n\r" +
-                "restaurantComponent - stored restaurant open to: " + this.restaurantService.getRestaurant()?.getOpenTo() + "\n\r" +
-                "restaurantComponent - stored restaurant available seats: " + this.restaurantService.getRestaurant()?.getAvailableSeatPerHour());
-
+  
   }
 
   public getRestaurantList(): Restaurant[] | null {
@@ -74,12 +66,7 @@ export class RestaurantComponent {
 
     this.restaurantService.setRestaurant(this.chosenRestaurant);
 
-    console.log("restaurantComponent - stored restaurant id: " + this.restaurantService.getRestaurant()?.getId() + "\n\r" +
-                "restaurantComponent - stored restaurant name: " + this.restaurantService.getRestaurant()?.getName() + "\n\r" +
-                "restaurantComponent - stored restaurant open from: " + this.restaurantService.getRestaurant()?.getOpenFrom() + "\n\r" +
-                "restaurantComponent - stored restaurant open to: " + this.restaurantService.getRestaurant()?.getOpenTo() + "\n\r" +
-                "restaurantComponent - stored restaurant available seats: " + this.restaurantService.getRestaurant()?.getAvailableSeatPerHour());
-  }
+    }
 
   onButtonClick() {
     console.log('restaurantComponent - A Tovább gombra kattintottak!');

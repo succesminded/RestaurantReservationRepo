@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dk.sb_restaurant_reservation_rest.dto.AvailableTimeSlotsDto;
+import dk.sb_restaurant_reservation_rest.dto.ReservationDto;
 import dk.sb_restaurant_reservation_rest.dto.RestaurantDto;
+import dk.sb_restaurant_reservation_rest.model.Reservation;
 import dk.sb_restaurant_reservation_rest.service.AppService;
 
 @CrossOrigin("http://localhost:4200")
@@ -51,4 +54,15 @@ public class AppController {
 		
 	}
 	
+	@PostMapping("/savereservation")
+	public Reservation saveReservation(
+						@RequestBody ReservationDto reservation){
+		
+		Reservation result = null;
+		
+		result = service.saveReservation(reservation);
+		
+		return result;
+		
+	}
 }

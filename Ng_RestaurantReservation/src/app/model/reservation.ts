@@ -6,6 +6,7 @@ export class Reservation {
 	private phone: string;
     private date: string;
     private seats: number;
+    private slot: number;
 
      public constructor() {
         this.id = 0;
@@ -14,6 +15,7 @@ export class Reservation {
         this.phone = "";
         this.date = "";
         this.seats = 0;
+        this.slot = 0;
 
     }
 
@@ -63,5 +65,13 @@ export class Reservation {
 
     public getSeats(): number {
         return this.seats;
+    }
+
+    public setSlot(slot: number) {
+        this.slot = slot;
+    }
+
+    public getSlot(): number {
+        return this.slot;
     }
 }

@@ -14,17 +14,17 @@
 <br>
 <br>
 
-<form #myForm="ngForm" (ngSubmit)="submitForm()">
+<form #myForm="ngForm" (ngSubmit)="submitForm(myForm)">
 
     <h3>Válassz dátumot és add meg a vendégek számát:</h3>
 
     <label><b>Dátum: </b></label>
-    <input type="date" name="date" [(ngModel)]="formData.date" [min]="today">
+    <input type="date" name="date" ngModel [min]="today">
     <br>
     <br>
 
     <label><b>Vendégek száma: </b></label>
-    <input type="number" name="seats" [(ngModel)]="formData.seats">
+    <input type="number" name="seats" ngModel>
     <br>
     <br>
 
@@ -32,8 +32,8 @@
 
 </form>
 
-<p>Űrlap tartalma: {{ formData | json }}</p>
+<br>
 
-<button (click)="onReservationBackButtonClick()">Vissza</button>
+<button (click)="onReservationBackButtonClick(myForm)">Vissza</button>
 
 <p>----reservation-component----</p>

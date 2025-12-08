@@ -4,7 +4,7 @@
 <h1>Éttermek listája</h1>
 
 <p>Válassz éttermet:
-<select [(ngModel)]="chosenRestaurant" (change)="saveChosenRestaurantValue()" required [value]="">
+<select [(ngModel)]="chosenRestaurant" (change)="saveChosenRestaurantValue()" required>
     <option *ngFor="let restaurant of resList" [ngValue]="restaurant">
         {{ restaurant.getName() }}
     </option>

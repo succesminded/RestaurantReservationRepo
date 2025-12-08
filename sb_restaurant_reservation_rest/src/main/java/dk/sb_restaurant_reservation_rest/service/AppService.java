@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import dk.sb_restaurant_reservation_rest.db.ReservationRepository;
 import dk.sb_restaurant_reservation_rest.db.RestaurantRepository;
 import dk.sb_restaurant_reservation_rest.dto.AvailableTimeSlotsDto;
+import dk.sb_restaurant_reservation_rest.dto.ReservationDto;
 import dk.sb_restaurant_reservation_rest.dto.RestaurantDto;
 import dk.sb_restaurant_reservation_rest.model.Reservation;
 import dk.sb_restaurant_reservation_rest.model.ReservationSum;
@@ -32,13 +33,12 @@ public class AppService {
 	public List<RestaurantDto> getAllRestaurant(){
 		
 		List<RestaurantDto> resDtoList = new ArrayList<>();
-		List<Restaurant> resList = new ArrayList<>();
+		Iterable<Restaurant> resList = new ArrayList<>();
 		
-		resList = restaurantRepository.getResList();
+		resList = restaurantRepository.findAll();
 		
-		for(int index = 0; index < resList.size(); index++) {
+		for(Restaurant res : resList) {
 			
-			Restaurant res = resList.get(index);
 			RestaurantDto resDto = new RestaurantDto(
 														res.getId(), 
 														res.getName(),
@@ -55,6 +55,11 @@ public class AppService {
 	public List<AvailableTimeSlotsDto> getAvailableTimeSlots(Integer restaurantId, String reservationDate,
 			Integer reservationSeats) {
 
+		System.out.println("restaurantId: " + restaurantId);
+		System.out.println("reservationDate: " + reservationDate);
+		System.out.println("reservationSeats: " + reservationSeats);
+		
+		
 		List<ReservationSum> reservationList = new ArrayList<>();
 		Restaurant restaurant = null;
 		List<AvailableTimeSlotsDto> availableTimeSlotsDtoList = new ArrayList<>();
@@ -68,33 +73,111 @@ public class AppService {
 			
 			restaurant = restaurantOpt.get();
 			
-			System.out.println("restaurant name: " + restaurant.getName());
-			System.out.println("restaurant from: " + restaurant.getOpenFrom());
-			System.out.println("restaurant to: " + restaurant.getOpenTo());
-			System.out.println("restaurant seats/hour: " + restaurant.getAvailableSeatPerHour());
+//			System.out.println("restaurant name: " + restaurant.getName());
+//			System.out.println("restaurant from: " + restaurant.getOpenFrom());
+//			System.out.println("restaurant to: " + restaurant.getOpenTo());
+//			System.out.println("restaurant seats/hour: " + restaurant.getAvailableSeatPerHour());
 		}
 		
 		reservationList = reservationRepository.getReservationByRestaurantIdAndReservationDate(restaurantId, reservationDate);
 		
-		for(int index = 0; index < reservationList.size(); index++) {
-			
-			System.out.println(index + ". - " + reservationList.get(index).getHour_from() + " - " + reservationList.get(index).getSumresseats());
-			
-		}
+//		for(int index = 0; index < reservationList.size(); index++) {
+//			
+//			System.out.println(index + ". - " + reservationList.get(index).getHour_from() + " - " + reservationList.get(index).getSumresseats());
+//			
+//		}
+		
+//		System.out.println("reservationList: " + reservationList);
 		
 		//felépíteni a válasz órákat tartalmazó tömböt
 		int hourFrom = restaurant.getOpenFrom();
 		int hourTo = restaurant.getOpenTo();
+		int restaurantSeatPerHour = restaurant.getAvailableSeatPerHour();
 		
-		for(int index = hourFrom; index < hourTo; index++) {
-			AvailableTimeSlotsDto availableTimeSlotsDto = new AvailableTimeSlotsDto(index);
+//		System.out.println("hourFrom: " + hourFrom);
+//		System.out.println("hourTo: " + hourTo);
+//		System.out.println("restaurantSeatPerHour: "+ restaurantSeatPerHour);
+		
+		for(int hourIndex = hourFrom; hourIndex < hourTo; hourIndex++) {
 			
-			availableTimeSlotsDtoList.add(availableTimeSlotsDto);
-		}
+			
+				
+				int hourIsInResList = containsHour(reservationList, hourIndex);
+//				System.out.println("hourIsInResList: " + hourIsInResList);
+				
+				if (hourIsInResList != -1) {
+					for(int resIndex = 0; resIndex < reservationList.size(); resIndex++) {
+						
+						int sumReservedInHour = reservationList.get(resIndex).getSumresseats();
+//						System.out.println("sumReservedInHour: " + sumReservedInHour);
+						
+						if(	hourIndex == reservationList.get(resIndex).getHour_from() &&
+							(restaurantSeatPerHour >= sumReservedInHour + reservationSeats)){
+							
+//							System.out.println("ADD");
+							
+							AvailableTimeSlotsDto availableTimeSlotsDto = new AvailableTimeSlotsDto(hourIndex);
+							availableTimeSlotsDtoList.add(availableTimeSlotsDto);
+							
+						}
+						
+					}
+				}
+				else {
+					AvailableTimeSlotsDto availableTimeSlotsDto = new AvailableTimeSlotsDto(hourIndex);
+					availableTimeSlotsDtoList.add(availableTimeSlotsDto);
+				}
+				
+				
+				
+				
+			//2025-12-04-re nem ad vissza semmit.	
+				//Ha benne van a resList-ben akkor kell lekérni az adatait és az if-et futtatni, egyébként simán
+				//hozzáadjuk
+				
+				
+				
+			}
+			
 		
 		return availableTimeSlotsDtoList;
 	}
 	
+	public int containsHour(List<ReservationSum> reservationList, int hourSearched) {
+		
+		int result = -1;
+		
+		for(int index = 0; index < reservationList.size(); index++) {
+			
+			int hourInList = reservationList.get(index).getHour_from();
+			
+			if (hourInList == hourSearched) {
+				result = index;
+			}
+		}
+		
+		return result;
+	}
+
+
+	public Reservation saveReservation(ReservationDto reservation) {
+		
+		Reservation result = null;
+		
+		Reservation newRes = new Reservation(
+												null,
+												reservation.getDate(),
+												reservation.getSlot(),
+												reservation.getName(),
+												reservation.getEmail(),
+												reservation.getPhone(),
+												reservation.getRid(),
+												reservation.getSeats());
+		
+		result = reservationRepository.save(newRes);
+		
+		return result;
+	}
 	
 	
 }

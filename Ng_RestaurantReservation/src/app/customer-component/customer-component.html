@@ -6,22 +6,22 @@
     (nyitvatartás:  {{ restaurantService.getRestaurant()?.getOpenFrom() }}:00 - 
     {{ restaurantService.getRestaurant()?.getOpenTo() }}:00)</label>
 
-<form #myForm="ngForm" (ngSubmit)="submitForm()">
+<form #myForm="ngForm" (ngSubmit)="submitForm(myForm)">
 
     <h3>Add meg az adataid:</h3>
 
     <label><b>Név: </b></label>
-    <input type="text" name="name" [(ngModel)]="formData.name">
+    <input type="text" name="name"  ngModel>
     <br>
     <br>
 
     <label><b>Email: </b></label>
-    <input type="email" name="email" [(ngModel)]="formData.email">
+    <input type="email" name="email" ngModel>
     <br>
     <br>
 
     <label><b>Telefonszám: </b></label>
-    <input type="number" name="age" [(ngModel)]="formData.phone">
+    <input type="number" name="phone" ngModel>
     <br>
     <br>
 
@@ -29,8 +29,8 @@
 
 </form>
 
-<p>Űrlap tartalma: {{ formData | json }}</p>
+<br>
 
-<button (click)="onCustomerBackButtonClick()">Vissza</button>
+<button (click)="onCustomerBackButtonClick(myForm)">Vissza</button>
 
 <p>----customer-component----</p>

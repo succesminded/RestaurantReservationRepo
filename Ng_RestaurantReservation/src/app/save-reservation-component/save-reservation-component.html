@@ -1,6 +1,6 @@
-<p>----availableTimeSlots-component----</p>
+<p>----saveReservation-component----</p>
 
-<h1>Foglalható idősávak</h1>
+<h1>Foglalás mentése</h1>
 
 <label><b>Kiválasztott étterem neve: </b>{{ restaurantService.getRestaurant()?.getName() }} 
     (nyitvatartás:  {{ restaurantService.getRestaurant()?.getOpenFrom() }}:00 - 
@@ -16,19 +16,9 @@
 <br>
 <label><b>Foglalás hány főre: </b>{{ restaurantService.getReservation()?.getSeats() }}</label>
 <br>
+<label><b>Foglalás időpontja: </b>{{ restaurantService.getReservation()?.getSlot() + ":00" }}</label>
 <br>
 
+<p>{{ saveResResponse }}</p>
 
-    <label><b>Válassz időpontot: </b></label>
-
-    <select [(ngModel)]="selectedSlot" required>
-        <option *ngFor="let slot of slotList" [ngValue]="slot.getHourFrom()">
-            {{ slot.getHourFrom() + ":00"}}
-        </option>
-    </select>
-    <br>
-
-    <button (click)="submitButtonClicked()" type="submit">Küldés</button>
-
-
-<p>----availableTimeSlots-component----</p>
+<p>----saveReservation-component----</p>
